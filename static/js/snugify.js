@@ -17,7 +17,6 @@ function setupSM() {
     soundManager.useFlashBlock = false; // optionally, enable when you're ready to dive in
     soundManager.onready(function() {
         window.sm_loaded = true;
-      // Ready to use; soundManager.createSound() etc. can now be called.
     });
 }
 
@@ -54,6 +53,6 @@ function searchLoadSong(user_input) {
     clear_container("songInfo");
     // looks like this:
     // http://snuggle.sandpit.us/looper?combined=kreayshawn%20gucci%20gucci
-    $.ajax({url: "/looper", data: {combined : user_input}, dataType: 'JSON', success: injectSong, error:ohShit});
+    $.ajax({url: "/looper", data: {combined : user_input, bars_count: 4}, dataType: 'JSON', success: injectSong, error:ohShit});
     return false;
 }
