@@ -3,7 +3,7 @@ $(function(){
 		$selectable = $(".selectable"),
 		$imagesContainer = $("#images");
 	
-		$selectable.on("click",function(){
+		$selectable.live("click",function(){
 			$(this).addClass("selected");
 			$imagesContainer.find("img:not('.selected')").fadeOut();
 		});	
