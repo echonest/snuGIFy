@@ -4,8 +4,11 @@ $(function(){
 		$imagesContainer = $("#images");
 	
 		$selectable.live("click",function(){
+			$imagesContainer.children("img").removeClass("selected");
 			$(this).addClass("selected");
-			$imagesContainer.find("img:not('.selected')").fadeOut();
+			$imagesContainer.find("img:not('.selected')").fadeOut(300,function(){
+				$(this).remove();
+			});
 		});	
 
 	$gifSearch.submit(function(){
