@@ -44,9 +44,9 @@ def get_song(combined="kreayshawn gucci gucci"):
     if len(s) > 0:
         try:
             url = s[0].get_tracks("7digital-US")[0]["preview_url"]
+            return (url, s[0])
         except KeyError:
-            url = None
-    return url
+            return (None, None)
 
 def download_url(url):
     print "downloading"
@@ -78,7 +78,12 @@ def get_loops(fileobj, output_name="out.mp3", bars_count=8, bars_start=1):
     out = audio.getpieces(audio_file, collect)
     output_temp = tempfile.NamedTemporaryFile(mode="w+b", suffix=".mp3")
     out.encode(output_temp.name)
-    analysis = json.loads(urllib.urlopen(audio_file.analysis.pyechonest_track.analysis_url).read())
+    
+    # Do it again
+    new_one = audio.LocalAudioFile(output_temp.name)
+    analysis = json.loads(urllib.urlopen(new_one.analysis.pyechonest_track.analysis_url).read())
+    
+    
     return (output_temp, analysis)
     
 def upload_to_s3(fileobj):
@@ -91,14 +96,14 @@ def upload_to_s3(fileobj):
     
 def do_it(search, bars_count=8, bars_start=1):
     combined = sys.argv[1]
-    url = get_song(combined=combined)
+    (url, song) = get_song(combined=search)
     fileobj = download_url(url)
     (oneloopobj, analysis) = get_loops(fileobj, bars_count=bars_count, bars_start=bars_start)
-    return (upload_to_s3(oneloopobj), analysis)
+    analysis["artist"] = song.artist_name
+    analysis["title"] = song.title
+    analysis["loop_url"] = upload_to_s3(oneloopobj)
+    return analysis
     
-    
-#if __name__ == '__main__':
-#    print str(do_it(sys.argv[1]))
 
 class searchgif:
     def GET(self):
@@ -114,15 +119,11 @@ class searchgif:
 class looper:
     def POST(self):
         i = web.input(combined=None, bars_count=8, bars_start=1)
-        (url,analysis) = do_it(i.combined, bars_count=i.bars_count, bars_start=i.bars_start)
-        analysis["loop_url"] = url
-        return json.dumps(analysis)
+        return json.dumps( do_it(i.combined, bars_count=i.bars_count, bars_start=i.bars_start) )
 
     def GET(self):
         i = web.input(combined=None, bars_count=8, bars_start=1)
-        (url,analysis) = do_it(i.combined, bars_count=i.bars_count, bars_start=i.bars_start)
-        analysis["loop_url"] = url
-        return json.dumps(analysis)
+        return json.dumps( do_it(i.combined, bars_count=i.bars_count, bars_start=i.bars_start) )
 
 if __name__ == "__main__":
     app.run()
