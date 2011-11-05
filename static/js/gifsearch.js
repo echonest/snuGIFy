@@ -47,6 +47,6 @@ $(function(){
 
 	var addLoader = function(to){
 		$('<div class="loader" id="imageLoader"></div>').insertAfter(to);
-	}
+	};
 
 });
