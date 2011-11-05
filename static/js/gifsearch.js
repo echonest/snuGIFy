@@ -29,8 +29,8 @@ $(function(){
 
 	var populateModal = function($obj,data){
 		var html = "";
-		for (url in data){
-			html += '<img src="'+img.url+'" />';
+		for (var i=0;i<data.length;i++){
+			html += '<img src="'+data[i].url+'" />';
 		}
 		$body.html(html);
 	};
