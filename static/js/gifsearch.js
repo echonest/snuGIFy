@@ -30,7 +30,7 @@ $(function(){
 	var populateModal = function($obj,data){
 		var html = "";
 		for (var i=0;i<data.length;i++){
-			html += '<img src="'+data[i].url+'" />';
+			html += '<img src="'+data[i].url+'" class="selectable" />';
 		}
 		$obj.html(html);
 	};
