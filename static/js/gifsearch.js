@@ -4,7 +4,7 @@ $(function(){
 	$gifSearch.submit(function(){
 		var $this = $(this),
 		//url = $gifSearch.val("action");
-		url = "http://snuggle.sandpit.us:8080/searchgif?query=",
+		url = "http://snuggle.sandpit.us/searchgif?query=",
 		finderoo = $("#gifTitle").val();
 
 		console.log(finderoo);
