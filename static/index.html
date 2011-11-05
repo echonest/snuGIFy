@@ -52,7 +52,7 @@
         
         <form id="songSearch">
            Find Songs: <input type="text" class="large" name="url" value="kreayshawn gucci gucci"/>
-           <input type="submit" value="HEAR THIS NOW" class="btn large" />
+           <input id="songCombinedInput" type="submit" value="HEAR THIS NOW" class="btn large" />
         </form>
 
         <div id="songInfo"></div>
@@ -64,6 +64,12 @@
     <script type="text/javascript">
         $(document).ready(function(){
             loopFile("/static/out.mp3");
+            // songCombinedInput
+            //hook the submit button on the search form
+            $("#songSearch").submit(function() {
+                var query_str = $("#songCombinedInput").val();
+                return searchLoadSong(query_str);
+            });
         });
         
     </script>
