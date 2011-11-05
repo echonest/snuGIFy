@@ -17,6 +17,7 @@ import pyechonest.song as song
 import echonest.aws as aws
 import random
 import string
+import shutil
 import subprocess
 
 pconfig.ECHO_NEST_API_KEY = "N6E4NIOVYMTHNDM8J"
