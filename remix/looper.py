@@ -17,6 +17,7 @@ import pyechonest.song as song
 import echonest.aws as aws
 import random
 import string
+import subprocess
 try:
     import json
 except ImportError:
@@ -24,7 +25,8 @@ except ImportError:
 
 
 urls = (
-    '/looper', 'looper'
+    '/looper', 'looper',
+    '/searchgif', 'searchgif'
 )
 app = web.application(urls, globals())
 
@@ -52,7 +54,7 @@ def download_url(url):
     temp.write(urllib.urlopen(url).read())
     return temp
 
-def get_loops(fileobj, output_name="out.mp3"):
+def get_loops(fileobj, output_name="out.mp3", bars_count=8, bars_start=1):
     print "analyzing"
     audio_file = audio.LocalAudioFile(fileobj.name)
     print "done"
@@ -62,23 +64,22 @@ def get_loops(fileobj, output_name="out.mp3"):
     collect = audio.AudioQuantumList()
     
     bars = audio_file.analysis.bars
-    bar_count = 8
-    bar_start = 1
     repeats = 1
-    if len(bars)-bar_start < bar_count:
-        bar_count = 4
-    if len(bars)-bar_start < bar_count:
-        bar_count = 1
+    if len(bars)-bars_start < bars_count:
+        bars_count = 4
+    if len(bars)-bars_start < bars_count:
+        bars_count = 1
 
-    print "actual bar count was %d" % (bar_count)
+    print "actual bar count was %d" % (bars_count)
     for y in xrange(repeats):
-        for x in xrange(bar_count):
-            collect.append(audio_file.analysis.bars[bar_start+x])
-
+        for x in xrange(bars_count):
+            collect.append(audio_file.analysis.bars[bars_start+x])
+    
     out = audio.getpieces(audio_file, collect)
     output_temp = tempfile.NamedTemporaryFile(mode="w+b", suffix=".mp3")
     out.encode(output_temp.name)
-    return output_temp
+    analysis = json.loads(urllib.urlopen(audio_file.analysis.pyechonest_track.analysis_url).read())
+    return (output_temp, analysis)
     
 def upload_to_s3(fileobj):
     fn = random_string()+".mp3"
@@ -88,29 +89,38 @@ def upload_to_s3(fileobj):
     key.close()
     return "http://remix-sounds.sandpit.us/"+fn
     
-def do_it(search):
+def do_it(search, bars_count=8, bars_start=1):
     combined = sys.argv[1]
     url = get_song(combined=combined)
     fileobj = download_url(url)
-    oneloopobj = get_loops(fileobj)
-    return upload_to_s3(oneloopobj)
+    (oneloopobj, analysis) = get_loops(fileobj, bars_count=bars_count, bars_start=bars_start)
+    return (upload_to_s3(oneloopobj), analysis)
     
     
-if __name__ == '__main__':
-    print str(do_it(sys.argv[1]))
+#if __name__ == '__main__':
+#    print str(do_it(sys.argv[1]))
 
+class searchgif:
+    def GET(self):
+        i = web.input(query=None)
+        if i.query is not None:
+            cmd = 'curl "http://dump.fm/cmd/search/'+urllib.quote(i.query)+'"'
+            p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            (json_block, errs) = p.communicate()
+            return json_block
+        return "{'need a query':'RALPH'}"
 
 
 class looper:
     def POST(self):
         i = web.input(combined=None, bars_count=8, bars_start=1)
-        (url,analysis) = do_it(combined=i.combined, bars_count=i.bars_count, bars_start=i.bars_start)
+        (url,analysis) = do_it(i.combined, bars_count=i.bars_count, bars_start=i.bars_start)
         analysis["loop_url"] = url
         return json.dumps(analysis)
 
     def GET(self):
         i = web.input(combined=None, bars_count=8, bars_start=1)
-        (url,analysis) = do_it(combined=i.combined, bars_count=i.bars_count, bars_start=i.bars_start)
+        (url,analysis) = do_it(i.combined, bars_count=i.bars_count, bars_start=i.bars_start)
         analysis["loop_url"] = url
         return json.dumps(analysis)
 
