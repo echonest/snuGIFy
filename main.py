@@ -90,7 +90,7 @@ def get_loops(fileobj, output_name="out.mp3", bars_count=8, bars_start=1):
     analysis = json.loads(urllib.urlopen(new_one.analysis.pyechonest_track.analysis_url).read())
     
     
-    return (new_one, analysis)
+    return (output_temp.name[:-4]+".mp3", analysis)
     
 def upload_to_s3(filename):
     fn = random_string()+".mp3"
