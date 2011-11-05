@@ -22,7 +22,7 @@ $(function(){
 			url : url + finderoo,
 			dataType: 'json',
 			beforeSend : function($this){
-				$this.append('<div class="loader" id="imageLoader"></div>');
+				$gifSearch.append('<div class="loader" id="imageLoader"></div>');
 			},
 			success : function(data){
 				populate($imagesContainer,data);
