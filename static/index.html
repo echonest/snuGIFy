@@ -9,10 +9,13 @@
     <script type="text/javascript"> google.load("jquery", "1"); </script>
     <script type="text/javascript"> google.load("jqueryui", "1"); </script>
     
+    <script type="text/javascript" src="/static/js/jquery.jplayer.min.js"></script>
+    <script type="text/javascript" src="/static/js/snugify.js"></script>
+    
     <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
     <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.10/themes/base/jquery-ui.css" type="text/css" media="all"> 
-
-	<title>snugGIFy</title>
+    
+    <title>snugGIFy</title>
 
 
 </head>
@@ -43,11 +46,14 @@
     
     <script type="text/javascript">
         $(document).ready(function(){
-            // window.timestamp = 0;
-            // setup_jplayer();
+            window.timestamp = 0;
+            setup_jplayer();
+            playTrack("/static/out.mp3")
             // disable_jplayer();
         });
         
     </script>
 </body>
 </html>
+
+
