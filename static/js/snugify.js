@@ -44,10 +44,13 @@ function injectSong(data) {
     var songObj = data;
     updateSongInfo(songObj.artist, songObj.title);
     loopFile(songObj.loop_url);
+    $("#songLoader").fadeOut().remove();
 }
 
 function ohShit(e) {
+    alert("some shit went wrong so search for another song innit");
     console.log(e);
+    $("#songLoader").fadeOut().remove();
 }
 
 function searchLoadSong(user_input) {

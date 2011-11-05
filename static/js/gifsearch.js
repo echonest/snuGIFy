@@ -21,10 +21,11 @@
 			url : url + finderoo,
 			dataType: 'json',
 			beforeSend : function($this){
-				addLoader('#gifSearch .btn');
+				addLoader('#gifSearch .btn','imageLoader');
 			},
 			success : function(data){
 				populate($imagesContainer,data);
+				$("#songSearch").fadeIn();
 			},
 			error : function (a,b,c) {
 				console.log(a,b,c);
@@ -44,7 +45,7 @@
 		$("#imageLoader").fadeOut();
 	};
 
-	var addLoader = function(to){
+	var addLoader = function(to,id){
 		console.log("add loader to ", to);
-		$('<div class="loader" id="imageLoader"></div>').insertAfter(to);
+		$('<div class="loader" id="'+id+'"></div>').insertAfter(to);
 	};

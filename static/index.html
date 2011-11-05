@@ -43,11 +43,6 @@
         </form>
 
         <div id="images"></div>
-
-        <form>
-            GIF url: <input type="text" class="large" name="url" value="http://dump.fm/images/replaced/20100912/crabmonster.gif"/>
-            <input type="submit" value="SNUGGLE" class="btn large" />
-        </form>
         
         <form id="songSearch">
            Find Songs: <input id="songCombinedInput" type="text" class="large" name="url" value="kreayshawn gucci gucci"/>
@@ -66,10 +61,11 @@
             // songCombinedInput
             //hook the submit button on the search form
             $("#songSearch").submit(function() {
-                addLoader('#songCombinedInput .btn');
+                addLoader('#songSearch .btn','songLoader');
                 var query_str = $("#songCombinedInput").val();
                 return searchLoadSong(query_str);
             });
+
         });
         
     </script>
