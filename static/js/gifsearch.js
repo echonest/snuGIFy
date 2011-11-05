@@ -32,7 +32,7 @@ $(function(){
 		for (var i=0;i<data.length;i++){
 			html += '<img src="'+data[i].url+'" />';
 		}
-		$body.html(html);
+		$obj.html(html);
 	};
 
 });
