@@ -13,7 +13,6 @@ function clear_container(container_name) {
 
 function setupSM() {
     soundManager.url = '/static/';
-    soundManager.debugMode = false;
     soundManager.flashVersion = 9; // optional: shiny features (default = 8)
     soundManager.useFlashBlock = false; // optionally, enable when you're ready to dive in
     soundManager.onready(function() {
