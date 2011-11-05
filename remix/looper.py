@@ -116,6 +116,10 @@ class searchgif:
             new_list = []
             for x in package:
                 if x["url"].endswith(".gif"):
+                    if x["url"].startswith("/"):
+                        x["url"] = "http://dump.fm/images"+x["url"]
+                    else:
+                        x["url"] = "http://"+x["url"]
                     new_list.append(x)
             return json.dumps(new_list)
         return "{'need a query':'RALPH'}"
