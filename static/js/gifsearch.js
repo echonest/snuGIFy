@@ -4,13 +4,13 @@ $(function(){
 	$gifSearch.submit(function(){
 		var $this = $(this),
 		//url = $gifSearch.val("action");
-		url = "http://snugify.sandpit.us/searchgif?query=",
+		url = "http://snuggle.sandpit.us:8080/searchgif?query=",
 		finderoo = $("#gifTitle").val();
 
 		console.log(finderoo);
 		$.ajax({
 			url : url + finderoo,
-			type : "GET",
+			dataType: 'json',
 			success : function(data){
 				console.log(data);
 			},
