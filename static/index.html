@@ -68,7 +68,7 @@
             $("#songSearch").submit(function() {
                 addLoader('#songCombinedInput .btn');
                 var query_str = $("#songCombinedInput").val();
-                searchLoadSong(query_str);
+                return searchLoadSong(query_str);
             });
         });
         
