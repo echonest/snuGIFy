@@ -93,7 +93,7 @@ def upload_to_s3(fileobj):
     return "http://remix-sounds.sandpit.us/"+fn
     
 def do_it(search, bars_count=8, bars_start=1):
-    combined = sys.argv[1]
+    # combined = sys.argv[1]
     (url, song) = get_song(combined=search)
     fileobj = download_url(url)
     (oneloopobj, analysis) = get_loops(fileobj, bars_count=bars_count, bars_start=bars_start)
