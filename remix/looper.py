@@ -112,7 +112,12 @@ class searchgif:
             cmd = 'curl "http://dump.fm/cmd/search/'+urllib.quote(i.query)+'"'
             p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             (json_block, errs) = p.communicate()
-            return json_block
+            package = json.loads(json_block)
+            new_list = []
+            for x in package:
+                if x["url"].endswith(".gif"):
+                    new_list.append(x)
+            return json.dumps(new_list)
         return "{'need a query':'RALPH'}"
 
 
