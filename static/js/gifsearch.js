@@ -6,19 +6,14 @@ $(function(){
 		//url = $gifSearch.val("action");
 		url = "http://snuggle.sandpit.us/searchgif?query=",
 		finderoo = $("#gifTitle").val(),
-		$modal = $("#modality"),
-		$modalBody = $modal.find(".modal-body");
+		$imagesContainer = $("#images");
 
 		console.log(finderoo);
 		$.ajax({
 			url : url + finderoo,
 			dataType: 'json',
 			success : function(data){
-				populateModal($modalBody,data);
-				$("#modality").modal({
-	                keyboard : true,
-	                show : true
-	            });
+				populate($imagesContainer,data);
 			},
 			error : function (a,b,c) {
 				console.log(a,b,c);
@@ -27,7 +22,7 @@ $(function(){
 		return false;
 	});
 
-	var populateModal = function($obj,data){
+	var populate = function($obj,data){
 		var html = "";
 		for (var i=0;i<data.length;i++){
 			html += '<img src="'+data[i].url+'" class="selectable" />';
