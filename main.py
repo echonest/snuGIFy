@@ -76,20 +76,25 @@ def get_loops(fileobj, output_name="out.mp3", bars_count=8, bars_start=1):
             collect.append(audio_file.analysis.bars[bars_start+x])
     
     out = audio.getpieces(audio_file, collect)
-    output_temp = tempfile.NamedTemporaryFile(mode="w+b", suffix=".mp3")
+    output_temp = tempfile.NamedTemporaryFile(mode="w+b", suffix=".wav")
     out.encode(output_temp.name)
-    
+
+    # Make it a special looing mp3
+    # You first have to copy it
+    shutil.copyfile(output_temp.name,output_temp.name+".2.wav")
+    os.system("lame -b 128 -h --nogap %s %s" % (output_temp.name, output_temp.name+".2.wav"))
+        
     # Do it again
-    new_one = audio.LocalAudioFile(output_temp.name)
+    new_one = audio.LocalAudioFile(output_temp.name[:-4]+".mp3")
     analysis = json.loads(urllib.urlopen(new_one.analysis.pyechonest_track.analysis_url).read())
     
     
-    return (output_temp, analysis)
+    return (new_one, analysis)
     
-def upload_to_s3(fileobj):
+def upload_to_s3(filename):
     fn = random_string()+".mp3"
     key = _bucket.new_key(fn)
-    key.set_contents_from_file(fileobj)
+    key.set_contents_from_filename(filename)
     key.set_acl("public-read")
     key.close()
     return "http://remix-sounds.sandpit.us/"+fn
@@ -98,10 +103,10 @@ def do_it(search, bars_count=8, bars_start=1):
     # combined = sys.argv[1]
     (url, song) = get_song(combined=search)
     fileobj = download_url(url)
-    (oneloopobj, analysis) = get_loops(fileobj, bars_count=bars_count, bars_start=bars_start)
+    (new_one, analysis) = get_loops(fileobj, bars_count=bars_count, bars_start=bars_start)
     analysis["artist"] = song.artist_name
     analysis["title"] = song.title
-    analysis["loop_url"] = upload_to_s3(oneloopobj)
+    analysis["loop_url"] = upload_to_s3(new_one)
     return analysis
     
 
