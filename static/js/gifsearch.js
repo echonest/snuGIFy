@@ -1,12 +1,18 @@
 $(function(){
-	var $gifSearch = $("#gifSearch");
+	var $gifSearch = $("#gifSearch"),
+		$selectable = $(".selectable"),
+		$imagesContainer = $("#images");
+	
+		$selectable.on("click",function(){
+			$(this).addClass("selected");
+			$imagesContainer.find("img:not('.selected')").fadeOut();
+		});	
 
 	$gifSearch.submit(function(){
 		var $this = $(this),
 		//url = $gifSearch.val("action");
 		url = "http://snuggle.sandpit.us/searchgif?query=",
-		finderoo = $("#gifTitle").val(),
-		$imagesContainer = $("#images");
+		finderoo = $("#gifTitle").val();
 
 		console.log(finderoo);
 		$.ajax({
