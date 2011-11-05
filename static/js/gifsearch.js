@@ -22,15 +22,15 @@ $(function(){
 			url : url + finderoo,
 			dataType: 'json',
 			beforeSend : function($this){
-				$gifSearch.append('<div class="loader" id="imageLoader"></div>');
+				addLoader('#gifSearch .btn');
 			},
 			success : function(data){
 				populate($imagesContainer,data);
 			},
 			error : function (a,b,c) {
 				console.log(a,b,c);
+				$("#imageLoader").fadeOut().remove();
 				alert("Something went wrong, so search again bitch.");
-				$("imageLoader").fadeOut().remove();
 			}
 		});
 		return false;
@@ -44,5 +44,9 @@ $(function(){
 		$obj.html(html);
 		$("imageLoader").fadeOut();
 	};
+
+	var addLoader = function(to){
+		$('<div class="loader" id="imageLoader"></div>').insertAfter(to);
+	}
 
 });
