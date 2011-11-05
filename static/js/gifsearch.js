@@ -21,11 +21,16 @@ $(function(){
 		$.ajax({
 			url : url + finderoo,
 			dataType: 'json',
+			beforeSend : function($this){
+				$this.append('<div class="loader" id="imageLoader"></div>');
+			},
 			success : function(data){
 				populate($imagesContainer,data);
 			},
 			error : function (a,b,c) {
 				console.log(a,b,c);
+				alert("Something went wrong, so search again bitch.");
+				$("imageLoader").fadeOut().remove();
 			}
 		});
 		return false;
@@ -37,6 +42,7 @@ $(function(){
 			html += '<img src="'+data[i].url+'" class="selectable" />';
 		}
 		$obj.html(html);
+		$("imageLoader").fadeOut();
 	};
 
 });

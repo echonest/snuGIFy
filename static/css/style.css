@@ -1,2 +1,4 @@
 #container{width:960px;padding:20px;background:white;margin:10px auto;font-family:"Comic Sans MS";}
+.loader{background:url("/static/images/loader.gif") no-repeat 0 0;height: 40px;width: 40px;display: inline-block;
+margin: -15px 10px;}
 .selectable:hover{cursor:pointer};
