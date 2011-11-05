@@ -43,7 +43,7 @@ function updateSongInfo(artist, title) {
 function injectSong(data) {
     var songObj = data;
     updateSongInfo(songObj.artist, songObj.title);
-    loopFile(blob.loop_url);
+    loopFile(songObj.loop_url);
 }
 
 function ohShit(e) {
