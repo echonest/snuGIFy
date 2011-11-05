@@ -41,15 +41,19 @@ function updateSongInfo(artist, title) {
 }
 
 function injectSong(data) {
-    var songObj = JSON.parse(data);
+    var songObj = data;
     updateSongInfo(songObj.artist, songObj.title);
     loopFile(blob.loop_url);
+}
+
+function ohShit(e) {
+    console.log(e);
 }
 
 function searchLoadSong(user_input) {
     clear_container("songInfo");
     // looks like this:
     // http://snuggle.sandpit.us/looper?combined=kreayshawn%20gucci%20gucci
-    $.getJSON("/looper", {combined : user_input}, injectSong);
+    $.ajax({url: "/looper", data: {combined : user_input}, dataType: 'JSON', success: injectSong, error:ohShit);
     return false;
 }
