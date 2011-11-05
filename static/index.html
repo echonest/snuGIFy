@@ -66,9 +66,9 @@
             // songCombinedInput
             //hook the submit button on the search form
             $("#songSearch").submit(function() {
+                addLoader('#songCombinedInput .btn');
                 var query_str = $("#songCombinedInput").val();
-                //addLoader('#songCombinedInput .btn');
-                return searchLoadSong(query_str);
+                searchLoadSong(query_str);
             });
         });
         

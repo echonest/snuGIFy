@@ -1,4 +1,3 @@
-$(function(){
 	var $gifSearch = $("#gifSearch"),
 		$selectable = $(".selectable"),
 		$imagesContainer = $("#images");
@@ -42,11 +41,10 @@ $(function(){
 			html += '<img src="'+data[i].url+'" class="selectable" />';
 		}
 		$obj.html(html);
-		$("imageLoader").fadeOut();
+		$("#imageLoader").fadeOut();
 	};
 
 	var addLoader = function(to){
+		console.log("add loader to ", to);
 		$('<div class="loader" id="imageLoader"></div>').insertAfter(to);
 	};
-
-});
