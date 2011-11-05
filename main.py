@@ -12,12 +12,14 @@ import urllib
 import os
 import web
 import echonest.audio as audio
+import pyechonest.config as pconfig
 import pyechonest.song as song
 import echonest.aws as aws
 import random
 import string
 import subprocess
 
+pconfig.ECHO_NEST_API_KEY = "N6E4NIOVYMTHNDM8J"
 logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s")
 try:
     import simplejson as json
