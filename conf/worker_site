@@ -1,0 +1,29 @@
+LoadModule wsgi_module modules/mod_wsgi.so
+
+ServerLimit         100
+ThreadLimit         1
+StartServers        20
+MaxClients          100
+MinSpareThreads      1
+MaxSpareThreads      100
+ThreadsPerChild      1
+MaxRequestsPerChild   0
+
+WSGIPythonEggs /
+WSGISocketPrefix /var/run/wsgi
+
+<VirtualHost *:80>
+             ServerName snuggle.sandpit.us:80
+             DocumentRoot /var/www/worker_code/
+
+             WSGIScriptAlias / /var/www/worker_code/main.py
+
+             Alias /static /var/www/worker_code/static
+             Alias /favicon.ico /var/www/worker_code/static/images/favicon.ico
+             AddType text/html .py
+
+             <Directory /var/www/worker_code/>
+                 Order deny,allow
+                 Allow from all
+             </Directory>
+</VirtualHost>

@@ -9,7 +9,7 @@
     <script type="text/javascript"> google.load("jquery", "1"); </script>
     <script type="text/javascript"> google.load("jqueryui", "1"); </script>
     
-    <script type="text/javascript" src="/static/js/jquery.jplayer.min.js"></script>
+    <script type="text/javascript" src="/static/js/soundmanager2-jsmin.js"></script>
     <script type="text/javascript" src="/static/js/snugify.js"></script>
     
     <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
@@ -23,6 +23,9 @@
 
 	<title>snugGIFy</title>
 
+    <script type="text/javascript">
+        setupSM();
+    </script>
 
 </head>
 
@@ -51,10 +54,7 @@
     <script type="text/javascript" src="js/jsgif/gif.js"></script>
     <script type="text/javascript">
         $(document).ready(function(){
-            window.timestamp = 0;
-            setup_jplayer();
-            playTrack("/static/out.mp3")
-            // disable_jplayer();
+            loopFile("/static/out.mp3");
         });
         
     </script>

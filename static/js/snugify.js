@@ -1,49 +1,24 @@
-function setup_jplayer() {
-    $("#jquery_jplayer").jPlayer({
-      ready: function () {
-      },
-      customCssIds: true,
-      swfPath:"/static/Jplayer.swf",
-      loop:true,
-      ended: function() { // The $.jPlayer.event.ended event
-        $(this).jPlayer("play"); // Repeat the media
-      },
+function setupSM() {
+    soundManager.url = '/static/';
+    soundManager.flashVersion = 9; // optional: shiny features (default = 8)
+    soundManager.useFlashBlock = false; // optionally, enable when you're ready to dive in
+    soundManager.onready(function() {
+        window.sm_loaded = true;
+      // Ready to use; soundManager.createSound() etc. can now be called.
     });
-    
-    // //looplooplooplooploop
-    // $("#jquery_jplayer").jPlayer("onSoundComplete", function() { 
-    //         $(this).play(); 
-    // });
-    
-    window.global_lp = 0;
-    window.callbacks = [];
-
-    $("#jquery_jplayer").jPlayer("onProgressChange", function(lp,ppr,ppa,pt,tt) {
-        var lpInt = parseInt(lp);
-        var ppaInt = parseInt(ppa);
-        console.log("lpInt"+lpInt);
-        console.log("ppaInt"+ppaInt);
-        window.global_lp = lpInt;
-        window.timestamp = pt/1000;
-
-        $('#loaderBar').progressbar('option', 'value', lpInt);
-        $('#sliderPlayback').slider('value', ppaInt);
-                
-        if (window.current_track) {
-            for (var i = 0; i<window.callbacks.length; i++) {
-                window.callbacks[i](pt/1000);
-            }
-        }
-    });
-
 }
 
-function disable_jplayer() {
-    $("#jquery_jplayer").jPlayer("stop");
-    $("#jquery_jplayer").jPlayer("setFile", null);
-}
+function loopFile(url) {
+    if (!window.sm_loaded) {
+        return false;
+    }
+    var s = soundManager.createSound({
+      id:url,
+      url:url
+    });
 
-function playTrack(track_path) {
-    $("#jquery_jplayer").jPlayer("setMedia", {mp3: track_path}).jPlayer("play");
-    return false;
+    s.play({
+      loops: 100
+    });
+    return true;
 }
