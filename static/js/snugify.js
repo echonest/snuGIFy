@@ -20,6 +20,7 @@ window.requestAnimFrame = (function(callback){
 })();
 
 var testImages = ["/static/images/1.jpg","/static/images/2.jpg"],
+    prepped = [],
     prepImages = function(images){
         if(!(images instanceof Array)) images = [images]; // ensure array
 
@@ -27,30 +28,48 @@ var testImages = ["/static/images/1.jpg","/static/images/2.jpg"],
     for(var i=0;i<images.length;i++){
         var img = new Image();
             img.src = images[i];
+            $(".hidden").append($(img));
+            prepped.push(img);
         img.onload = function(){
             console.log(this,"loaded");
         };
+        console.log(testImages,prepped);
     }
 };
 
-prepImages(testImages);
+var rNum = function(){
+    return Math.floor(Math.random()*2);
+};
 
 function prepCanvas(image){
     var canvas = document.getElementById("reanimator"),
         context = canvas.getContext('2d'),
-        cw = image.width(),
-        ch = image.height();
+        cw = image.width,
+        ch = image.height;
+
+    console.log(cw,ch);
 
     $(canvas).fadeIn();
     canvas.width = cw;
     canvas.height = ch;
 
+    return draw(context,image,cw,ch);
+
 }
 
-function draw(canvas,image,w,h,time) {
+function draw(canvas,image,w,h) {
+    var i = rNum();
     canvas.drawImage(image,0,0,w,h);
-    setTimeout(draw,time,v,c,w,h);
+    setTimeout(function(){
+        console.log(prepped[i],"vs",image);
+        draw(canvas,prepped[i],w,h);
+    },300);
 }
+
+prepImages(testImages);
+setTimeout(function () {
+    prepCanvas(prepped[0]);
+},300);
 
 /** DOM bits and search **/
 
@@ -61,8 +80,7 @@ function clear_container(container_name) {
 
 function setupSM() {
     soundManager.url = '/static/';
-    soundManager.consoleOnly = true;
-    soundManager.debugMode = true;
+    soundManager.debugMode = false;
     soundManager.flashVersion = 9; // optional: shiny features (default = 8)
     soundManager.useFlashBlock = false; // optionally, enable when you're ready to dive in
     soundManager.onready(function() {

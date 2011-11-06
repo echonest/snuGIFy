@@ -9,9 +9,7 @@
     <script type="text/javascript"> google.load("jquery", "1"); </script>
     <script type="text/javascript"> google.load("jqueryui", "1"); </script>
     
-    <script type="text/javascript" src="/static/js/soundmanager2-jsmin.js"></script>
-    <script type="text/javascript" src="/static/js/snugify.js"></script>
-    
+    <script type="text/javascript" src="/static/js/soundmanager2-jsmin.js"></script>    
     <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
     <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.10/themes/base/jquery-ui.css" type="text/css" media="all"> 
     
@@ -21,11 +19,6 @@
     <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.10/themes/base/jquery-ui.css" type="text/css" media="all">
 
 	<title>snugGIFy</title>
-
-    <script type="text/javascript">
-        setupSM();
-    </script>
-
 </head>
 
 <body>
@@ -59,8 +52,9 @@
     <script type="text/javascript" src="js/jsgif/gif.js"></script>
     <script type="text/javascript" src="js/bootstrap/bootstrap-modal.js"></script>
     <script type="text/javascript">
+        setupSM();
         $(document).ready(function(){
-            loopFile("/static/out.mp3");
+            //loopFile("/static/out.mp3");
             // songCombinedInput
             //hook the submit button on the search form
             $("#songSearch").submit(function() {
@@ -73,6 +67,6 @@
         });
         
     </script>
-
+<div class="hidden"></div>
 </body>
 </html>
