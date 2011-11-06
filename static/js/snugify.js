@@ -20,7 +20,7 @@ var cursor = 0,
     }
 };
 
-var stepOver = function(somarr){
+var stepOver = function(somearr){
     var tick = somearr.length;
     cursor += 1;
     if(cursor > somarr.length) cursor = 0;
