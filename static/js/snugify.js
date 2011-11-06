@@ -174,7 +174,7 @@ function displayNext(timestamp) {
         console.log("drawing:",prepped[i]);
         var image = new Image();
         image.src = prepped[i].src;
-        context.drawImage(image,0,0,w,h);
+        context.drawImage(image,0,0,cw,ch);
     }
 }
 
