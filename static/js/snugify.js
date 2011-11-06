@@ -173,35 +173,11 @@ function displayNext(timestamp) {
         canvas.height = ch;
         console.log("drawing:",prepped[i]);
         var image = new Image();
-        image.src = prepped[i];
+        image.src = prepped[i].src;
         context.drawImage(image,0,0,w,h);
     }
 }
 
-// function collect_beats(songObj) {
-//     if (!songObj) {
-//         return false;
-//     }
-//     var bars = songObj.bars;
-//     var beats = songObj.beats;
-//     for (var b=0; b<bars.length; b++) {
-//         var currentBar = bars[b];
-//         currentBar.beats = []
-//         var endTime = currentBar.start+currentBar.duration;
-//         var startTime = currentBar.start;
-//         for (var be=0; be<beats.length; be++) {
-//             var currentBeat = beats[be];
-//             if (currentBeat.start > startTime) {
-//                 
-//             }
-//             if ((currentBeat.start+currentBeat.duration) <= endTime) {
-//                 currentBar.beats.push(currentBeat)
-//             } else {
-//                 break;
-//             }
-//         }
-//     }
-// }
 
 function searchLoadSong(user_input) {
     clear_container("songInfo");
