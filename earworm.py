@@ -33,7 +33,6 @@ Otherwise, you can get it here: http://pypi.python.org/pypi/networkx
 Get the source, unzip it, cd to the directory it is in and run:
     python setup.py install
 """
-    sys.exit(1)
 
 from echonest.action import Playback, Jump, Fadeout, render, display_actions
 from echonest.audio import LocalAudioFile
