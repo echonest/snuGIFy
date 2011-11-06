@@ -6,6 +6,54 @@ $.extend({
     }
 });
 
+/** Canvas stuff **/
+
+window.requestAnimFrame = (function(callback){
+    return window.requestAnimationFrame ||
+    window.webkitRequestAnimationFrame ||
+    window.mozRequestAnimationFrame ||
+    window.oRequestAnimationFrame ||
+    window.msRequestAnimationFrame ||
+    function(callback){
+        window.setTimeout(callback, 1000 / 60);
+    };
+})();
+
+var testImages = ["/static/images/1.jpg","/static/images/2.jpg"],
+    prepImages = function(images){
+        if(!(images instanceof Array)) images = [images]; // ensure array
+
+
+    for(var i=0;i<images.length;i++){
+        var img = new Image();
+            img.src = images[i];
+        img.onload = function(){
+            console.log(this,"loaded");
+        };
+    }
+};
+
+prepImages(testImages);
+
+function prepCanvas(image){
+    var canvas = document.getElementById("reanimator"),
+        context = canvas.getContext('2d'),
+        cw = image.width(),
+        ch = image.height();
+
+    $(canvas).fadeIn();
+    canvas.width = cw;
+    canvas.height = ch;
+
+}
+
+function draw(canvas,image,w,h,time) {
+    canvas.drawImage(image,0,0,w,h);
+    setTimeout(draw,time,v,c,w,h);
+}
+
+/** DOM bits and search **/
+
 function clear_container(container_name) {
     var elmt = document.getElementById(container_name);
     elmt.innerHTML="";
@@ -55,17 +103,7 @@ function ohShit(e) {
     $("#songLoader").fadeOut().remove();
 }
 
-function prepCanvas(image){
-    var canvas = document.getElementById("reanimator"),
-        context = canvas.getContext('2d'),
-        cw = image.width(),
-        ch = image.height();
 
-    $(canvas).fadeIn();
-    canvas.width = cw;
-    canvas.height = ch;
-
-}
 
 function searchLoadSong(user_input) {
     clear_container("songInfo");
