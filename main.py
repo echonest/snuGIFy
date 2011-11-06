@@ -85,9 +85,11 @@ def decompose_gif(gifurl):
 
 def download_url(url):
     print "downloading"
-    temp = tempfile.NamedTemporaryFile(mode="wb", suffix=".mp3")
-    temp.write(urllib.urlopen(url).read())
-    return temp
+    temp1 = tempfile.NamedTemporaryFile(mode="wb", suffix=".mp3")
+    temp1.write(urllib.urlopen(url).read())
+    temp2 = tempfile.NamedTemporaryFile(mode="wb", suffix=".mp3")
+    os.system("lame --resample 44100 %s %s" % (temp1.name, temp2.name))
+    return temp2
 
 
 def get_loops(fileobj, output_temp, inter=8.0, trans=2.0):
