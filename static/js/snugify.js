@@ -152,6 +152,9 @@ function displayNext(timestamp) {
     var feature = get_feature(songObj.beats, timestamp);
     console.log("feature for "+timestamp+" is:"+JSON.stringify(feature));
     
+    if (window.feature == null ) {
+        $("#reanimator").fadeIn();        
+    }
     if (feature != window.feature) {
         //update!
         var i = stepOver(prepped);
@@ -163,7 +166,7 @@ function displayNext(timestamp) {
 
         // console.log(cw,ch);
 
-        // $(canvas).fadeIn();
+        // $("#reanimator").fadeIn();
         canvas.width = cw;
         canvas.height = ch;
 
