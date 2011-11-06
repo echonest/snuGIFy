@@ -22,6 +22,7 @@ from echonest.action import render, make_stereo
 from echonest.audio import LocalAudioFile
 from pyechonest import util
 from capsule_support import resample_features, timbre_whiten, initialize, make_transition, terminate, FADE_OUT, is_valid
+import earworm
 
 def flatten(l):
     """ Converts a list of tuples to a flat list.
@@ -39,6 +40,7 @@ def rows(m):
     """returns the # of rows in a numpy matrix"""
     return m.shape[0]
 
+pconfig.TRACE_API_CALLS=True
 pconfig.ECHO_NEST_API_KEY = "N6E4NIOVYMTHNDM8J"
 logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s")
 try:
@@ -123,9 +125,19 @@ def get_loops(fileobj, inter=8.0, trans=2.0):
     analysis = json.loads(urllib.urlopen(new_one.analysis.pyechonest_track.analysis_url).read())
     return (output_temp.name, analysis)
     
+def fruity_loops(fileobj, output_temp):
+    options = {'plot': None, 'force': None, 'verbose': None, 'graph': None, 'infinite': None, 'length': None, 'minimum': 16, 'longest': None, 'duration': 600, 'pickle': None, 'shortest': True}
+    args = [fileobj.name]
+    track = LocalAudioFile(args[0], verbose=False)
+    # import pdb; pdb.set_trace()
+    # this is where the work takes place
+    actions = earworm.do_work(track, options)
+    render(actions, output_temp.name, verbose=False)
+    new_one = audio.LocalAudioFile(output_temp.name)
+    analysis = json.loads(urllib.urlopen(new_one.analysis.pyechonest_track.analysis_url).read())
+    # print os.path.exists(output_temp.name)
+    return (output_temp.name, analysis)
     
-    
-
 def upload_to_s3(filename, ext=".mp3"):
     fn = random_string()+ext
     key = _bucket.new_key(fn)
@@ -138,7 +150,11 @@ def do_it(search, inter=8.0, trans=2.0, gifurl=None):
     gifs = decompose_gif(gifurl)
     (url, song) = get_song(combined=search)
     fileobj = download_url(url)
-    (new_one, analysis) = get_loops(fileobj, inter=inter, trans=trans)
+    output_temp = tempfile.NamedTemporaryFile(mode="w+b", suffix=".mp3")
+    # (new_one, analysis) = get_loops(fileobj, inter=inter, trans=trans)
+    (new_one, analysis) = fruity_loops(fileobj, output_temp)
+    print os.path.exists(new_one)
+    
     analysis["artist"] = song.artist_name
     analysis["title"] = song.title
     analysis["loop_url"] = upload_to_s3(new_one)
