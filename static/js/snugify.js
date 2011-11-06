@@ -1,25 +1,5 @@
-$.extend({
-    keys:	 function(obj){
-        var a = [];
-        $.each(obj, function(k){ a.push(k); });
-        return a;
-    }
-});
-
-/** Canvas stuff **/
-
-window.requestAnimFrame = (function(callback){
-    return window.requestAnimationFrame ||
-    window.webkitRequestAnimationFrame ||
-    window.mozRequestAnimationFrame ||
-    window.oRequestAnimationFrame ||
-    window.msRequestAnimationFrame ||
-    function(callback){
-        window.setTimeout(callback, 1000 / 60);
-    };
-})();
-
-var testImages = ["/static/images/1.jpg","/static/images/2.jpg"],
+var cursor = 0,
+    testImages = ["/static/images/1.jpg","/static/images/2.jpg"],
     prepped = [],
     prepImages = function(images){
         if(!(images instanceof Array)) images = [images]; // ensure array
@@ -141,3 +121,24 @@ function searchLoadSong(user_input) {
     });
     return false;
 }
+
+$.extend({
+    keys:    function(obj){
+        var a = [];
+        $.each(obj, function(k){ a.push(k); });
+        return a;
+    }
+});
+
+/** Canvas stuff **/
+
+window.requestAnimFrame = (function(callback){
+    return window.requestAnimationFrame ||
+    window.webkitRequestAnimationFrame ||
+    window.mozRequestAnimationFrame ||
+    window.oRequestAnimationFrame ||
+    window.msRequestAnimationFrame ||
+    function(callback){
+        window.setTimeout(callback, 1000 / 60);
+    };
+})();
