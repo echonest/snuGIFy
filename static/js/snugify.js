@@ -150,13 +150,15 @@ function get_feature(feature_list, offset)
 function displayNext(timestamp) {
     songObj = window.songObj;
     var feature = get_feature(songObj.beats, timestamp);
-    console.log("feature for "+timestamp+" is:"+JSON.stringify(feature));
+    // console.log("feature for "+timestamp+" is:"+JSON.stringify(feature));
     
     if (window.feature == null ) {
         $("#reanimator").fadeIn();        
     }
     if (feature != window.feature) {
+        console.log("updating feature!");
         //update!
+        window.feature = feature;        
         var i = stepOver(prepped);
         
         var canvas = document.getElementById("reanimator"),
@@ -169,9 +171,8 @@ function displayNext(timestamp) {
         // $("#reanimator").fadeIn();
         canvas.width = cw;
         canvas.height = ch;
-
+        console.log("drawing:",prepped[i]);
         context.drawImage(prepped[i],0,0,w,h);
-        window.feature = feature;
     }
 }
 
