@@ -5,6 +5,7 @@
 		$selectable.live("click",function(){
 			$imagesContainer.children("img").removeClass("selected");
 			$(this).addClass("selected");
+			playGIF(this.src);
 			$imagesContainer.find("img:not('.selected')").fadeOut(300,function(){
 				$(this).remove();
 			});
