@@ -8,11 +8,11 @@ var cursor = 0,
     for(var i=0;i<images.length;i++){
         var img = new Image();
             img.src = images[i];
-            console.log(img.src,images[i]);
+            // console.log(img.src,images[i]);
             $(".hidden").append($(img));
             prepped.push(img);
         img.onload = function(){
-            console.log(this,"loaded");
+            // console.log(this,"loaded");
         };
         console.log(testImages,prepped);
         // return prepCanvas(prepped); //start off our canvas animation
