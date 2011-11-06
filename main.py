@@ -63,14 +63,12 @@ def download_url(url):
 
 
 def get_loops(fileobj, inter=8.0, trans=2.0):
-    # Get pyechonest/remix objects
-    analyze = lambda x : LocalAudioFile(x, verbose=verbose)
-    tracks = map(analyze, audio_files)
+    track = LocalAudioFile(fileobj.name)
+    tracks = [track, track, track] # 3 of em!
 
     valid = []
     # compute resampled and normalized matrices
     for track in tracks:
-        if verbose: print "Resampling features for", track.analysis.pyechonest_track.title
         track.resampled = resample_features(track, rate='beats')
         track.resampled['matrix'] = timbre_whiten(track.resampled['matrix'])
         # remove tracks that are too small
@@ -82,7 +80,6 @@ def get_loops(fileobj, inter=8.0, trans=2.0):
 
     if len(tracks) < 1: return []
     # Initial transition. Should contain 2 instructions: fadein, and playback.
-    if verbose: print "Computing transitions..."
     start = initialize(tracks[0], inter, trans)
 
     # Middle transitions. Should each contain 2 instructions: crossmatch, playback.
