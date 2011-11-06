@@ -17,6 +17,14 @@ var cursor = 0,
     }
 };
 
+var stepOver = function(array){
+    var tick = array.length;
+    cursor += 1;
+    if(cursor > array.length) cursor = 0;
+    return array[cursor];
+
+};
+
 var rNum = function(){
     return Math.floor(Math.random()*2);
 };
@@ -41,12 +49,12 @@ function draw(canvas,image,w,h) {
     var i = rNum();
     canvas.drawImage(image,0,0,w,h);
     setTimeout(function(){
-        console.log(prepped[i],"vs",image);
-        draw(canvas,prepped[i],w,h);
+        console.log(stepOver(prepped),"vs",image);
+        draw(canvas,stepOver(prepped),w,h);
     },300);
 }
-/*
 prepImages(testImages);
+/*
 setTimeout(function () {
     prepCanvas(prepped[0]);
 },300);
