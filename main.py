@@ -126,7 +126,7 @@ def get_loops(fileobj, output_temp, inter=8.0, trans=2.0):
     return (output_temp.name, analysis)
     
 def fruity_loops(fileobj, output_temp):
-    options = {'plot': None, 'force': None, 'verbose': None, 'graph': None, 'infinite': None, 'length': None, 'minimum': 16, 'longest': None, 'duration': 600, 'pickle': None, 'shortest': True}
+    options = {'plot': None, 'force': None, 'verbose': None, 'graph': None, 'infinite': True, 'length': None, 'minimum': 16, 'longest': None, 'duration': 10, 'pickle': None, 'shortest': False}
     args = [fileobj.name]
     track = LocalAudioFile(args[0], verbose=False)
     # import pdb; pdb.set_trace()
@@ -151,8 +151,8 @@ def do_it(search, inter=8.0, trans=2.0, gifurl=None):
     (url, song) = get_song(combined=search)
     fileobj = download_url(url)
     output_temp = tempfile.NamedTemporaryFile(mode="w+b", suffix=".mp3")
-    (new_one, analysis) = get_loops(fileobj, output_temp, inter=inter, trans=trans)
-    # (new_one, analysis) = fruity_loops(fileobj, output_temp)
+    # (new_one, analysis) = get_loops(fileobj, output_temp, inter=inter, trans=trans)
+    (new_one, analysis) = fruity_loops(fileobj, output_temp)
     
     analysis["artist"] = song.artist_name
     analysis["title"] = song.title
