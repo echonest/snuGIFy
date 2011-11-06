@@ -24,7 +24,7 @@ var stepOver = function(somearr){
     var tick = somearr.length;
     cursor += 1;
     if(cursor > somearr.length) cursor = 0;
-    return somarr[cursor];
+    return somearr[cursor];
 
 };
 
