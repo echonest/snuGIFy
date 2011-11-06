@@ -21,7 +21,7 @@ var cursor = 0,
 };
 
 var stepOver = function(somarr){
-    var tick = array.length;
+    var tick = somearr.length;
     cursor += 1;
     if(cursor > somarr.length) cursor = 0;
     return somarr[cursor];
