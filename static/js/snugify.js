@@ -8,6 +8,7 @@ var cursor = 0,
     for(var i=0;i<images.length;i++){
         var img = new Image();
             img.src = images[i];
+            console.log(img.src,images[i]);
             $(".hidden").append($(img));
             prepped.push(img);
         img.onload = function(){
@@ -19,11 +20,11 @@ var cursor = 0,
     }
 };
 
-var stepOver = function(array){
+var stepOver = function(somarr){
     var tick = array.length;
     cursor += 1;
-    if(cursor > array.length) cursor = 0;
-    return array[cursor];
+    if(cursor > somarr.length) cursor = 0;
+    return somarr[cursor];
 
 };
 
