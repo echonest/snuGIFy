@@ -28,7 +28,7 @@
 
 </head>
 
-<body class="catchadream">
+<body>
     <div id="container">
         <h1>One big div, full of bad giffage</h1>
 
@@ -63,6 +63,7 @@
             $("#songSearch").submit(function() {
                 addLoader('#songSearch .btn','songLoader');
                 var query_str = $("#songCombinedInput").val();
+                $("body").addClass("catchadream");
                 return searchLoadSong(query_str);
             });
 
