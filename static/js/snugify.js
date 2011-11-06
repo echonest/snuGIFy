@@ -114,7 +114,60 @@ function ohShit(e) {
     $("#songLoader").fadeOut().remove();
 }
 
+function get_index(feature_list, offset)
+{
+    var low = 0;
+    var high = feature_list.length - 1;
+    
+    while (low <= high) 
+    {
+        var mid = parseInt((low + high) / 2);
+        var midVal = feature_list[mid];
+        
+        if (midVal['start'] + midVal['duration'] < offset)
+            low = mid + 1;
+        else if (midVal['start'] > offset)
+            high = mid - 1;
+        else
+            return mid; // key found
+    }
+    return -1;  // key not found.
+}
 
+function get_feature(feature_list, offset) 
+{
+    var i = get_index(feature_list, offset);
+    if (i != -1)
+        return feature_list[i];
+    
+    return null;
+}
+
+
+// function collect_beats(songObj) {
+//     if (!songObj) {
+//         return false;
+//     }
+//     var bars = songObj.bars;
+//     var beats = songObj.beats;
+//     for (var b=0; b<bars.length; b++) {
+//         var currentBar = bars[b];
+//         currentBar.beats = []
+//         var endTime = currentBar.start+currentBar.duration;
+//         var startTime = currentBar.start;
+//         for (var be=0; be<beats.length; be++) {
+//             var currentBeat = beats[be];
+//             if (currentBeat.start > startTime) {
+//                 
+//             }
+//             if ((currentBeat.start+currentBeat.duration) <= endTime) {
+//                 currentBar.beats.push(currentBeat)
+//             } else {
+//                 break;
+//             }
+//         }
+//     }
+// }
 
 function searchLoadSong(user_input) {
     clear_container("songInfo");
