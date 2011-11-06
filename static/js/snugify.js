@@ -16,7 +16,7 @@ var cursor = 0,
         };
         console.log(testImages,prepped);
 
-        return prepCanvas(prepped[0]); //start off our canvas animation
+        return prepCanvas(prepped); //start off our canvas animation
     }
 };
 
@@ -32,11 +32,11 @@ var rNum = function(){
     return Math.floor(Math.random()*2);
 };
 
-function prepCanvas(image){
+function prepCanvas(images){
     var canvas = document.getElementById("reanimator"),
         context = canvas.getContext('2d'),
-        cw = image.width,
-        ch = image.height;
+        cw = images[0].width,
+        ch = images[0].height;
 
     console.log(cw,ch);
 
@@ -44,7 +44,7 @@ function prepCanvas(image){
     canvas.width = cw;
     canvas.height = ch;
 
-    return draw(context,image,cw,ch);
+    return draw(context,images[0],cw,ch);
 
 }
 
