@@ -15,8 +15,8 @@ var cursor = 0,
             console.log(this,"loaded");
         };
         console.log(testImages,prepped);
-
-        return prepCanvas(prepped); //start off our canvas animation
+        return true;
+        // return prepCanvas(prepped); //start off our canvas animation
     }
 };
 
@@ -47,15 +47,15 @@ function prepCanvas(images){
 
 }
 
-function draw(canvas,image,w,h) {
-    w = (w===0) ? image.width : w;
-    h = (h===0) ? image.height : h;
-    canvas.drawImage(image,0,0,w,h);
-    setTimeout(function(){
-        console.log(prepped(stepOver(prepped)),"vs",image);
-        draw(canvas,prepped(stepOver(prepped)),w,h);
-    },300);
-}
+// function draw(canvas,image,w,h) {
+//     w = (w===0) ? image.width : w;
+//     h = (h===0) ? image.height : h;
+//     canvas.drawImage(image,0,0,w,h);
+//     // setTimeout(function(){
+//     //     console.log(prepped(stepOver(prepped)),"vs",image);
+//     //     draw(canvas,prepped(stepOver(prepped)),w,h);
+//     // },300);
+// }
 /*
 prepImages(testImages);
 setTimeout(function () {
@@ -103,8 +103,9 @@ function injectSong(data) {
     var songObj = data;
     console.log(songObj,"song obj baby");
     updateSongInfo(songObj.artist, songObj.title);
-    loopFile(songObj.loop_url);
+    window.songObj = songObj;
     prepImages(songObj.gifurls);
+    loopFile(songObj.loop_url);
     $("#songLoader").fadeOut().remove();
 }
 
@@ -143,6 +144,30 @@ function get_feature(feature_list, offset)
     return null;
 }
 
+function displayNext(timestamp) {
+    songObj = window.songObj;
+    var feature = get_feature(songObj.beats, timestamp);
+    console.log("feature for "+timestamp+" is:"+JSON.stringify(feature));
+    
+    if (feature != window.feature) {
+        //update!
+        var i = stepOver(prepped);
+        
+        var canvas = document.getElementById("reanimator"),
+            context = canvas.getContext('2d'),
+            cw = prepped[i].width,
+            ch = prepped[i].height;
+
+        // console.log(cw,ch);
+
+        // $(canvas).fadeIn();
+        canvas.width = cw;
+        canvas.height = ch;
+
+        context.drawImage(prepped[i],0,0,w,h);
+        window.feature = feature;
+    }
+}
 
 // function collect_beats(songObj) {
 //     if (!songObj) {
