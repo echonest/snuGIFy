@@ -70,7 +70,7 @@ def get_song(combined="kreayshawn gucci gucci"):
 
 def decompose_gif(gifurl):
     gifname = "/tmp/"+random_string()+".gif"
-    os.system("curl -o \""+gifname+"\" \"" + gifurl + "\"")
+    os.system("curl -L -o \""+gifname+"\" \"" + gifurl + "\"")
     os.system("convert %s -scene 1 +adjoin %s_%%03d.gif" % (gifname, gifname))
     cmd = "ls %s_*" % gifname
     p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
