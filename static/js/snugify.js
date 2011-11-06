@@ -88,7 +88,11 @@ function loopFile(url) {
       id:url,
       url:url
     });
-
+    
+    s.options.whileplaying = function() {
+        displayNext(this.position/1000);
+    }
+    
     s.play({
       loops: 100
     });
