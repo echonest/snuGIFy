@@ -3,9 +3,15 @@
 		$imagesContainer = $("#images");
 	
 		$selectable.live("click",function(){
+			var $this = $(this),
+				source = $this.attr("src");
+			
 			$imagesContainer.children("img").removeClass("selected");
+			
 			$(this).addClass("selected");
+			
 			//playGIF(this.src);
+			
 			$imagesContainer.find("img:not('.selected')").fadeOut(300,function(){
 				$(this).remove();
 			});

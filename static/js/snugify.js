@@ -56,8 +56,16 @@ function ohShit(e) {
 
 function searchLoadSong(user_input) {
     clear_container("songInfo");
+    var source = $("img.selected").attr("src");
+    console.log(source);
     // looks like this:
     // http://snuggle.sandpit.us/looper?combined=kreayshawn%20gucci%20gucci
-    $.ajax({url: "/looper", data: {combined : user_input, bars_count: 4}, dataType: 'JSON', success: injectSong, error:ohShit});
+    $.ajax({
+        url: "/looper", 
+        data: {combined : user_input, bars_count: 4, gifurl : source}, 
+        dataType: 'JSON', 
+        success: injectSong, 
+        error:ohShit
+    });
     return false;
 }
