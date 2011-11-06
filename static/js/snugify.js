@@ -129,7 +129,7 @@ function searchLoadSong(user_input) {
     var img = $("img.selected");
         source = img.attr("src");
     console.log(source);
-    prepCanvas(img);
+    prepCanvas(img[0]);
     // looks like this:
     // http://snuggle.sandpit.us/looper?combined=kreayshawn%20gucci%20gucci
     $.ajax({
