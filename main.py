@@ -68,6 +68,19 @@ def get_song(combined="kreayshawn gucci gucci"):
         except KeyError:
             return (None, None)
 
+def decompose_gif(gifurl):
+    gifname = "/tmp/"+random_string()+".gif"
+    os.system("curl -o \""+gifname+"\" \"" + gifurl + "\"")
+    os.system("convert %s -scene 1 +adjoin %s_%%03d.gif" % (gifname, gifname))
+    cmd = "ls %s_*" % gifname
+    p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    (file_list, errs) = p.communicate()
+    file_list = file_list.split("\n")
+    urls = []
+    for x in file_list[:-1]:
+        urls.append(upload_to_s3(x, ext=".gif"))
+    return urls
+
 def download_url(url):
     print "downloading"
     temp = tempfile.NamedTemporaryFile(mode="wb", suffix=".mp3")
@@ -113,22 +126,23 @@ def get_loops(fileobj, inter=8.0, trans=2.0):
     
     
 
-def upload_to_s3(filename):
-    fn = random_string()+".mp3"
+def upload_to_s3(filename, ext=".mp3"):
+    fn = random_string()+ext
     key = _bucket.new_key(fn)
     key.set_contents_from_filename(filename)
     key.set_acl("public-read")
     key.close()
     return "http://remix-sounds.sandpit.us/"+fn
     
-def do_it(search, inter=8.0, trans=2.0):
-    # combined = sys.argv[1]
+def do_it(search, inter=8.0, trans=2.0, gifurl=None):
+    gifs = decompose_gif(gifurl)
     (url, song) = get_song(combined=search)
     fileobj = download_url(url)
     (new_one, analysis) = get_loops(fileobj, inter=inter, trans=trans)
     analysis["artist"] = song.artist_name
     analysis["title"] = song.title
     analysis["loop_url"] = upload_to_s3(new_one)
+    analysis["gifurls"] = gifs
     return analysis
     
 
@@ -154,12 +168,12 @@ class searchgif:
 
 class looper:
     def POST(self):
-        i = web.input(combined=None, inter=8.0, trans=2.0)
-        return json.dumps( do_it(i.combined, bars_count=i.bars_count, bars_start=i.bars_start) )
+        i = web.input(combined=None, inter=8.0, trans=2.0, gifurl=None)
+        return json.dumps( do_it(i.combined, inter=i.inter, trans=i.trans, gifurl=i.gifurl) )
 
     def GET(self):
-        i = web.input(combined=None, inter=8.0, trans=2.0)
-        return json.dumps( do_it(i.combined, bars_count=i.bars_count, bars_start=i.bars_start) )
+        i = web.input(combined=None, inter=8.0, trans=2.0, gifurl=None)
+        return json.dumps( do_it(i.combined, inter=i.inter, trans=i.trans, gifurl=i.gifurl) )
 
 class Index:
     def GET(self):
