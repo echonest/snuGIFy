@@ -11,10 +11,10 @@ var cursor = 0,
             // console.log(img.src,images[i]);
             $(".hidden").append($(img));
             prepped.push(img);
-        img.onload = function(){
+        //img.onload = function(){
             // console.log(this,"loaded");
-        };
-        console.log(testImages,prepped);
+        //};
+        //console.log(testImages,prepped);
         // return prepCanvas(prepped); //start off our canvas animation
     }
 };
