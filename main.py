@@ -19,6 +19,12 @@ import random
 import string
 import shutil
 import subprocess
+from echonest.action import render, make_stereo
+from echonest.audio import LocalAudioFile
+from pyechonest import util
+from capsule_support import order_tracks, equalize_tracks, resample_features, timbre_whiten, initialize, make_transition, terminate, FADE_OUT, display_actions, is_valid
+from utils import tuples
+
 
 pconfig.ECHO_NEST_API_KEY = "N6E4NIOVYMTHNDM8J"
 logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s")
@@ -55,43 +61,48 @@ def download_url(url):
     temp.write(urllib.urlopen(url).read())
     return temp
 
-def get_loops(fileobj, output_name="out.mp3", bars_count=8, bars_start=1):
-    print "analyzing"
-    audio_file = audio.LocalAudioFile(fileobj.name)
-    print "done"
-    
-    print "%d bars" % len(audio_file.analysis.bars)
 
-    collect = audio.AudioQuantumList()
-    
-    bars = audio_file.analysis.bars
-    repeats = 1
-    if len(bars)-bars_start < bars_count:
-        bars_count = 4
-    if len(bars)-bars_start < bars_count:
-        bars_count = 1
+def get_loops(fileobj, inter=8.0, trans=2.0):
+    # Get pyechonest/remix objects
+    analyze = lambda x : LocalAudioFile(x, verbose=verbose)
+    tracks = map(analyze, audio_files)
 
-    print "actual bar count was %d" % (bars_count)
-    for y in xrange(repeats):
-        for x in xrange(bars_count):
-            collect.append(audio_file.analysis.bars[bars_start+x])
-    
-    out = audio.getpieces(audio_file, collect)
-    output_temp = tempfile.NamedTemporaryFile(mode="w+b", suffix=".wav")
-    out.encode(output_temp.name)
+    valid = []
+    # compute resampled and normalized matrices
+    for track in tracks:
+        if verbose: print "Resampling features for", track.analysis.pyechonest_track.title
+        track.resampled = resample_features(track, rate='beats')
+        track.resampled['matrix'] = timbre_whiten(track.resampled['matrix'])
+        # remove tracks that are too small
+        if is_valid(track, inter, trans):
+            valid.append(track)
+        # for compatibility, we make mono tracks stereo
+        track = make_stereo(track)
+    tracks = valid
 
-    # Make it a special looing mp3
-    # You first have to copy it
-    shutil.copyfile(output_temp.name,output_temp.name+".2.wav")
-    os.system("lame -b 128 -h --nogap %s %s" % (output_temp.name, output_temp.name+".2.wav"))
-        
+    if len(tracks) < 1: return []
+    # Initial transition. Should contain 2 instructions: fadein, and playback.
+    if verbose: print "Computing transitions..."
+    start = initialize(tracks[0], inter, trans)
+
+    # Middle transitions. Should each contain 2 instructions: crossmatch, playback.
+    middle = []
+    [middle.extend(make_transition(t1, t2, inter, trans)) for (t1, t2) in tuples(tracks)]
+
+    # Last chunk. Should contain 1 instruction: fadeout.
+    end = terminate(tracks[-1], FADE_OUT)
+    actions =  start + middle + end
+    
+    output_temp = tempfile.NamedTemporaryFile(mode="w+b", suffix=".mp3")
+    render(actions, output_temp.name, False)
     # Do it again
-    new_one = audio.LocalAudioFile(output_temp.name[:-4]+".mp3")
+    new_one = audio.LocalAudioFile(output_temp.name)
     analysis = json.loads(urllib.urlopen(new_one.analysis.pyechonest_track.analysis_url).read())
+    return (output_temp.name, analysis)
     
     
-    return (output_temp.name[:-4]+".mp3", analysis)
     
+
 def upload_to_s3(filename):
     fn = random_string()+".mp3"
     key = _bucket.new_key(fn)
@@ -100,11 +111,11 @@ def upload_to_s3(filename):
     key.close()
     return "http://remix-sounds.sandpit.us/"+fn
     
-def do_it(search, bars_count=8, bars_start=1):
+def do_it(search, inter=8.0, trans=2.0):
     # combined = sys.argv[1]
     (url, song) = get_song(combined=search)
     fileobj = download_url(url)
-    (new_one, analysis) = get_loops(fileobj, bars_count=bars_count, bars_start=bars_start)
+    (new_one, analysis) = get_loops(fileobj, inter=inter, trans=trans)
     analysis["artist"] = song.artist_name
     analysis["title"] = song.title
     analysis["loop_url"] = upload_to_s3(new_one)
@@ -133,11 +144,11 @@ class searchgif:
 
 class looper:
     def POST(self):
-        i = web.input(combined=None, bars_count=8, bars_start=1)
+        i = web.input(combined=None, inter=8.0, trans=2.0)
         return json.dumps( do_it(i.combined, bars_count=i.bars_count, bars_start=i.bars_start) )
 
     def GET(self):
-        i = web.input(combined=None, bars_count=8, bars_start=1)
+        i = web.input(combined=None, inter=8.0, trans=2.0)
         return json.dumps( do_it(i.combined, bars_count=i.bars_count, bars_start=i.bars_start) )
 
 class Index:
