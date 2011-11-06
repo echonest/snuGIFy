@@ -154,7 +154,8 @@ function displayNext(timestamp) {
     // console.log("feature for "+timestamp+" is:"+JSON.stringify(feature));
     console.log("got new timestamp",timestamp);
     if (window.feature == null ) {
-        $("#reanimator").fadeIn();        
+        $("#reanimator").fadeIn();     
+        $(".selected").fadeOut();   
     }
     if (feature != window.feature) {
         console.log("updating feature!");
@@ -175,7 +176,7 @@ function displayNext(timestamp) {
         console.log("drawing:",prepped[i]);
         var image = new Image();
         image.src = prepped[i].src;
-        context.clearRect(0,0,cw,ch);
+        //context.clearRect(0,0,cw,ch);
         context.drawImage(image,0,0,cw,ch);
     }
 }
