@@ -150,7 +150,7 @@ function get_feature(feature_list, offset)
 
 function displayNext(timestamp) {
     songObj = window.songObj;
-    var feature = get_feature(songObj.beats, timestamp);
+    var feature = get_feature(songObj.segments, timestamp);
     // console.log("feature for "+timestamp+" is:"+JSON.stringify(feature));
     console.log("got new timestamp",timestamp);
     if (window.feature == null ) {
