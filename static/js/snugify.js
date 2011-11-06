@@ -55,10 +55,24 @@ function ohShit(e) {
     $("#songLoader").fadeOut().remove();
 }
 
+function prepCanvas(image){
+    var canvas = document.getElementById("reanimator"),
+        context = canvas.getContext('2d'),
+        cw = image.width(),
+        ch = image.height();
+
+    $(canvas).fadeIn();
+    canvas.width = cw;
+    canvas.height = ch;
+
+}
+
 function searchLoadSong(user_input) {
     clear_container("songInfo");
-    var source = $("img.selected").attr("src");
+    var img = $("img.selected");
+        source = img.attr("src");
     console.log(source);
+    prepCanvas(img);
     // looks like this:
     // http://snuggle.sandpit.us/looper?combined=kreayshawn%20gucci%20gucci
     $.ajax({

@@ -4,3 +4,4 @@ margin: -15px 10px;}
 .selectable:hover{cursor:pointer}
 form#songSearch{display:none;}
 #images{max-height:400px;width:100%;overflow:auto;margin:20px 0;}
+#reanimator{display:none;border:1px solid hotPink;}
