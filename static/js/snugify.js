@@ -15,7 +15,6 @@ var cursor = 0,
             console.log(this,"loaded");
         };
         console.log(testImages,prepped);
-        return true;
         // return prepCanvas(prepped); //start off our canvas animation
     }
 };
