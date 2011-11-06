@@ -162,22 +162,24 @@ function displayNext(timestamp) {
         //update!
         window.feature = feature;        
         var i = stepOver(prepped);
-        
+        /*
         var canvas = document.getElementById("reanimator"),
             context = canvas.getContext('2d'),
             cw = prepped[i].width,
             ch = prepped[i].height;
-
+        */
+        $animator = $("#reanimator");
         // console.log(cw,ch);
 
         // $("#reanimator").fadeIn();
-        canvas.width = cw;
-        canvas.height = ch;
+        //canvas.width = cw;
+        //canvas.height = ch;
         console.log("drawing:",prepped[i]);
-        var image = new Image();
-        image.src = prepped[i].src;
+        //var image = new Image();
+        //image.src = prepped[i].src;
         //context.clearRect(0,0,cw,ch);
-        context.drawImage(image,0,0,cw,ch);
+        //context.drawImage(image,0,0,cw,ch);
+        $animator.html(prepped[i]);
     }
 }
 
