@@ -152,7 +152,7 @@ function displayNext(timestamp) {
     var feature = get_feature(songObj.beats, timestamp);
     // console.log("feature for "+timestamp+" is:"+JSON.stringify(feature));
     console.log("got new timestamp",timestamp);
-    if (window.feature === null ) {
+    if (window.feature == null ) {
         $("#reanimator").fadeIn();        
     }
     if (feature != window.feature) {
