@@ -43,6 +43,7 @@ function updateSongInfo(artist, title) {
 
 function injectSong(data) {
     var songObj = data;
+    console.log(songObj,"song obj baby");
     updateSongInfo(songObj.artist, songObj.title);
     loopFile(songObj.loop_url);
     $("#songLoader").fadeOut().remove();
@@ -62,7 +63,7 @@ function searchLoadSong(user_input) {
     // http://snuggle.sandpit.us/looper?combined=kreayshawn%20gucci%20gucci
     $.ajax({
         url: "/looper", 
-        data: {combined : user_input, bars_count: 4, gifurl : source}, 
+        data: {combined : user_input, gifurl : source}, 
         dataType: 'JSON', 
         success: injectSong, 
         error:ohShit
