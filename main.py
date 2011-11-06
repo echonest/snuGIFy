@@ -90,7 +90,7 @@ def download_url(url):
     return temp
 
 
-def get_loops(fileobj, inter=8.0, trans=2.0):
+def get_loops(fileobj, output_temp, inter=8.0, trans=2.0):
     track = LocalAudioFile(fileobj.name)
     tracks = [track, track, track] # 3 of em!
 
@@ -118,7 +118,7 @@ def get_loops(fileobj, inter=8.0, trans=2.0):
     end = terminate(tracks[-1], FADE_OUT)
     actions =  start + middle + end
     
-    output_temp = tempfile.NamedTemporaryFile(mode="w+b", suffix=".mp3")
+    # output_temp = tempfile.NamedTemporaryFile(mode="w+b", suffix=".mp3")
     render(actions, output_temp.name, False)
     # Do it again
     new_one = audio.LocalAudioFile(output_temp.name)
@@ -151,9 +151,8 @@ def do_it(search, inter=8.0, trans=2.0, gifurl=None):
     (url, song) = get_song(combined=search)
     fileobj = download_url(url)
     output_temp = tempfile.NamedTemporaryFile(mode="w+b", suffix=".mp3")
-    # (new_one, analysis) = get_loops(fileobj, inter=inter, trans=trans)
-    (new_one, analysis) = fruity_loops(fileobj, output_temp)
-    print os.path.exists(new_one)
+    (new_one, analysis) = get_loops(fileobj, output_temp, inter=inter, trans=trans)
+    # (new_one, analysis) = fruity_loops(fileobj, output_temp)
     
     analysis["artist"] = song.artist_name
     analysis["title"] = song.title
