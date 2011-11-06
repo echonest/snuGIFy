@@ -88,7 +88,7 @@ def download_url(url):
     temp1 = tempfile.NamedTemporaryFile(mode="wb", suffix=".mp3")
     temp1.write(urllib.urlopen(url).read())
     temp2 = tempfile.NamedTemporaryFile(mode="wb", suffix=".mp3")
-    os.system("lame --resample 44100 %s %s" % (temp1.name, temp2.name))
+    os.system("lame --resample 44.1 %s %s" % (temp1.name, temp2.name))
     return temp2
 
 
