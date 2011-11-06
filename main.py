@@ -150,13 +150,13 @@ def do_it(search, inter=8.0, trans=2.0, gifurl=None):
     gifs = decompose_gif(gifurl)
     (url, song) = get_song(combined=search)
     fileobj = download_url(url)
-    output_temp = tempfile.NamedTemporaryFile(mode="w+b", suffix=".wav")
+    output_temp = tempfile.NamedTemporaryFile(mode="w+b", suffix=".mp3")
     # (new_one, analysis) = get_loops(fileobj, output_temp, inter=inter, trans=trans)
     (new_one, analysis) = fruity_loops(fileobj, output_temp)
     
     analysis["artist"] = song.artist_name
     analysis["title"] = song.title
-    analysis["loop_url"] = upload_to_s3(new_one, ext=".wav")
+    analysis["loop_url"] = upload_to_s3(new_one, ext=".mp3")
     analysis["gifurls"] = gifs
     return analysis
     
