@@ -16,27 +16,26 @@ var cursor = 0,
         };
         console.log(testImages,prepped);
 
-        return prepCanvas(prepped[0]); //start off our canvas animation
+        return prepCanvas(prepped); //start off our canvas animation
     }
 };
 
-var stepOver = function(somarr){
-    var tick = array.length;
+var stepOver = function(somearr){
+    var tick = somearr.length;
     cursor += 1;
-    if(cursor > somarr.length) cursor = 0;
-    return somarr[cursor];
-
+    if(cursor > somearr.length) cursor = 0;
+    return cursor;
 };
 
 var rNum = function(){
     return Math.floor(Math.random()*2);
 };
 
-function prepCanvas(image){
+function prepCanvas(images){
     var canvas = document.getElementById("reanimator"),
         context = canvas.getContext('2d'),
-        cw = image.width,
-        ch = image.height;
+        cw = images[0].width,
+        ch = images[0].height;
 
     console.log(cw,ch);
 
@@ -44,16 +43,17 @@ function prepCanvas(image){
     canvas.width = cw;
     canvas.height = ch;
 
-    return draw(context,image,cw,ch);
+    return draw(context,images[0],cw,ch);
 
 }
 
 function draw(canvas,image,w,h) {
-    var i = rNum();
+    w = (w===0) ? image.width : w;
+    h = (h===0) ? image.height : h;
     canvas.drawImage(image,0,0,w,h);
     setTimeout(function(){
-        console.log(stepOver(prepped),"vs",image);
-        draw(canvas,stepOver(prepped),w,h);
+        console.log(prepped(stepOver(prepped)),"vs",image);
+        draw(canvas,prepped(stepOver(prepped)),w,h);
     },300);
 }
 /*
