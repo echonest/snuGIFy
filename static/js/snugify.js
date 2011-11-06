@@ -65,11 +65,12 @@ function draw(canvas,image,w,h) {
         draw(canvas,prepped[i],w,h);
     },300);
 }
-
+/*
 prepImages(testImages);
 setTimeout(function () {
     prepCanvas(prepped[0]);
 },300);
+*/
 
 /** DOM bits and search **/
 
