@@ -8,20 +8,23 @@ var cursor = 0,
     for(var i=0;i<images.length;i++){
         var img = new Image();
             img.src = images[i];
+            console.log(img.src,images[i]);
             $(".hidden").append($(img));
             prepped.push(img);
         img.onload = function(){
             console.log(this,"loaded");
         };
         console.log(testImages,prepped);
+
+        return prepCanvas(prepped[0]); //start off our canvas animation
     }
 };
 
-var stepOver = function(array){
+var stepOver = function(somarr){
     var tick = array.length;
     cursor += 1;
-    if(cursor > array.length) cursor = 0;
-    return array[cursor];
+    if(cursor > somarr.length) cursor = 0;
+    return somarr[cursor];
 
 };
 
@@ -53,8 +56,8 @@ function draw(canvas,image,w,h) {
         draw(canvas,stepOver(prepped),w,h);
     },300);
 }
-prepImages(testImages);
 /*
+prepImages(testImages);
 setTimeout(function () {
     prepCanvas(prepped[0]);
 },300);
@@ -101,6 +104,7 @@ function injectSong(data) {
     console.log(songObj,"song obj baby");
     updateSongInfo(songObj.artist, songObj.title);
     loopFile(songObj.loop_url);
+    prepImages(songObj.gifurls);
     $("#songLoader").fadeOut().remove();
 }
 
@@ -117,7 +121,6 @@ function searchLoadSong(user_input) {
     var img = $("img.selected");
         source = img.attr("src");
     console.log(source);
-    prepCanvas(img[0]);
     // looks like this:
     // http://snuggle.sandpit.us/looper?combined=kreayshawn%20gucci%20gucci
     $.ajax({
