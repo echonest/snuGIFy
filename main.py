@@ -17,12 +17,11 @@ import pyechonest.song as song
 import echonest.aws as aws
 import random
 import string
-import shutil
 import subprocess
 from echonest.action import render, make_stereo
 from echonest.audio import LocalAudioFile
 from pyechonest import util
-from capsule_support import order_tracks, equalize_tracks, resample_features, timbre_whiten, initialize, make_transition, terminate, FADE_OUT, display_actions, is_valid
+from capsule_support import resample_features, timbre_whiten, initialize, make_transition, terminate, FADE_OUT, is_valid
 from utils import tuples
 
 
