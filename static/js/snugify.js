@@ -24,8 +24,7 @@ var stepOver = function(somearr){
     var tick = somearr.length;
     cursor += 1;
     if(cursor > somearr.length) cursor = 0;
-    return somearr[cursor];
-
+    return cursor;
 };
 
 var rNum = function(){
@@ -49,11 +48,12 @@ function prepCanvas(images){
 }
 
 function draw(canvas,image,w,h) {
-    var i = rNum();
+    w = (w===0) ? image.width : w;
+    h = (h===0) ? image.height : h;
     canvas.drawImage(image,0,0,w,h);
     setTimeout(function(){
-        console.log(stepOver(prepped),"vs",image);
-        draw(canvas,stepOver(prepped),w,h);
+        console.log(prepped(stepOver(prepped)),"vs",image);
+        draw(canvas,prepped(stepOver(prepped)),w,h);
     },300);
 }
 /*
