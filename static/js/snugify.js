@@ -172,7 +172,9 @@ function displayNext(timestamp) {
         canvas.width = cw;
         canvas.height = ch;
         console.log("drawing:",prepped[i]);
-        context.drawImage(prepped[i],0,0,w,h);
+        var image = new Image();
+        image.src = prepped[i];
+        context.drawImage(image,0,0,w,h);
     }
 }
 
